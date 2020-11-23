@@ -29,7 +29,9 @@ RUN apt-get update \
       bison \
       libgmp-dev \
       libtidy-dev \
-      libgd2-xpm-dev
+      libgd2-xpm-dev \
+      libmagickwand-dev \
+      libmagickcore-dev
 RUN wget https://cmake.org/files/v2.8/cmake-2.8.12.1.tar.gz
 RUN tar xzf cmake-2.8.12.1.tar.gz
 RUN cd cmake-2.8.12.1 \
@@ -131,4 +133,20 @@ RUN cd php-7.4.12 \
       --with-zlib \
   && make \
   && checkinstall -y --pkgname $PACKAGE_NAME
+RUN cd /php-7.4.12/ext \
+  && wget https://github.com/Imagick/imagick/archive/3.4.4.tar.gz \
+  && tar xzf 3.4.4.tar.gz \
+  && cd imagick-3.4.4 \
+  && $MAIN_PREFIX/bin/phpize \
+  && ./configure --with-php-config=$MAIN_PREFIX/bin/php-config \
+  && make \
+  && checkinstall -y -pkgname $PACKAGE_NAME-imagick
+RUN cd /php-7.4.12/ext \
+  && wget https://github.com/krakjoe/apcu/archive/v5.1.19.tar.gz \
+  && tar xzf v5.1.19.tar.gz \
+  && cd apcu-5.1.19 \
+  && $MAIN_PREFIX/bin/phpize \
+  && ./configure --with-php-config=$MAIN_PREFIX/bin/php-config \
+  && make \
+  && checkinstall -y -pkgname $PACKAGE_NAME-apcu
 
