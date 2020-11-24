@@ -80,6 +80,12 @@ RUN cd libgd-2.1.1 \
   && ./configure --prefix=$DEP_PREFIX \
   && make \
   && checkinstall -y --pkgname $PACKAGE_NAME-libgd
+RUN curl https://download.libsodium.org/libsodium/releases/libsodium-1.0.18.tar.gz > libsodium-1.0.18.tar.gz
+RUN tar xzf libsodium-1.0.18.tar.gz
+RUN cd libsodium-1.0.18 \
+  && ./configure --prefix=$DEP_PREFIX \
+  && make \
+  && checkinstall -y --pkgname $PACKAGE_NAME-libsodium
 RUN wget https://www.php.net/distributions/php-7.4.12.tar.gz
 RUN tar xzf php-7.4.12.tar.gz
 RUN cd php-7.4.12 \
@@ -124,6 +130,7 @@ RUN cd php-7.4.12 \
       --with-pdo-mysql \
       --with-pdo-sqlite \
       --with-pear \
+      --with-sodium \
       --with-sqlite3 \
       --with-tidy \
       --with-xmlrpc \
