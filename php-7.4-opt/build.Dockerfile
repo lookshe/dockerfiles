@@ -147,7 +147,7 @@ RUN cd /php-7.4.12/ext \
   && $MAIN_PREFIX/bin/phpize \
   && ./configure --with-php-config=$MAIN_PREFIX/bin/php-config \
   && make \
-  && checkinstall -y -pkgname $PACKAGE_NAME-imagick
+  && checkinstall -y --pkgname $PACKAGE_NAME-imagick
 RUN cd /php-7.4.12/ext \
   && wget https://github.com/krakjoe/apcu/archive/v5.1.19.tar.gz \
   && tar xzf v5.1.19.tar.gz \
@@ -155,5 +155,5 @@ RUN cd /php-7.4.12/ext \
   && $MAIN_PREFIX/bin/phpize \
   && ./configure --with-php-config=$MAIN_PREFIX/bin/php-config \
   && make \
-  && checkinstall -y -pkgname $PACKAGE_NAME-apcu
+  && checkinstall -y --pkgname $PACKAGE_NAME-apcu
 
