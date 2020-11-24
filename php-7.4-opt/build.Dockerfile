@@ -118,8 +118,8 @@ RUN cd php-7.4.12 \
       --with-freetype \
       --with-gettext \
       --with-gmp \
-      #--with-imap=shared \
-      #--with-imap-ssl \
+      --with-imap \
+      --with-imap-ssl \
       --with-jpeg \
       --with-kerberos \
       --with-ldap=shared \

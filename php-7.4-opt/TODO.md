@@ -1,6 +1,5 @@
 ## ToDo
 
-- add imap to configure flags
 - add config files
   - php.ini
   - modules
