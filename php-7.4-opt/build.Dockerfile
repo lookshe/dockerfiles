@@ -32,7 +32,8 @@ RUN apt-get update \
       libtidy-dev \
       libgd2-xpm-dev \
       libmagickwand-dev \
-      libmagickcore-dev
+      libmagickcore-dev \
+      libmemcached-dev
 RUN wget https://cmake.org/files/v2.8/cmake-2.8.12.1.tar.gz
 RUN tar xzf cmake-2.8.12.1.tar.gz
 RUN cd cmake-2.8.12.1 \
@@ -176,4 +177,16 @@ RUN cd /php-7.4.12/ext/apcu-5.1.19 \
   && echo extension=apcu.so > $MAIN_PREFIX_NO_ROOT/etc/conf.d/apcu.ini \
   && echo $MAIN_PREFIX_NO_ROOT/etc/conf.d/apcu.ini >> files_to_add \
   && checkinstall -y --pkgname $PACKAGE_NAME-apcu --include files_to_add
+RUN cd /php-7.4.12/ext \
+  && wget https://github.com/php-memcached-dev/php-memcached/archive/v3.1.5.tar.gz \
+  && tar xzf v3.1.5.tar.gz \
+  && cd php-memcached-3.1.5 \
+  && $MAIN_PREFIX/bin/phpize \
+  && ./configure --with-php-config=$MAIN_PREFIX/bin/php-config --disable-memcached-sasl \
+  && make
+RUN cd /php-7.4.12/ext/php-memcached-3.1.5 \
+  && mkdir -p $MAIN_PREFIX_NO_ROOT/etc/conf.d \
+  && echo extension=memcached.so > $MAIN_PREFIX_NO_ROOT/etc/conf.d/memcached.ini \
+  && echo $MAIN_PREFIX_NO_ROOT/etc/conf.d/memcached.ini >> files_to_add \
+  && checkinstall -y --pkgname $PACKAGE_NAME-memcached --include files_to_add
 
