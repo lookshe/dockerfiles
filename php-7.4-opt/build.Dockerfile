@@ -189,4 +189,16 @@ RUN cd /php-7.4.12/ext/php-memcached-3.1.5 \
   && echo extension=memcached.so > $MAIN_PREFIX_NO_ROOT/etc/conf.d/memcached.ini \
   && echo $MAIN_PREFIX_NO_ROOT/etc/conf.d/memcached.ini >> files_to_add \
   && checkinstall -y --pkgname $PACKAGE_NAME-memcached --include files_to_add
+RUN cd /php-7.4.12/ext \
+  && wget https://github.com/phpredis/phpredis/archive/5.3.3.tar.gz \
+  && tar xzf 5.3.3.tar.gz \
+  && cd phpredis-5.3.3 \
+  && $MAIN_PREFIX/bin/phpize \
+  && ./configure --with-php-config=$MAIN_PREFIX/bin/php-config \
+  && make
+RUN cd /php-7.4.12/ext/phpredis-5.3.3 \
+  && mkdir -p $MAIN_PREFIX_NO_ROOT/etc/conf.d \
+  && echo extension=redis.so > $MAIN_PREFIX_NO_ROOT/etc/conf.d/redis.ini \
+  && echo $MAIN_PREFIX_NO_ROOT/etc/conf.d/redis.ini >> files_to_add \
+  && checkinstall -y --pkgname $PACKAGE_NAME-redis --include files_to_add
 
