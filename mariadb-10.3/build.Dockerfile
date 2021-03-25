@@ -11,7 +11,8 @@ RUN apt-get update \
   && apt-get build-dep -y mariadb-server-10.3
 RUN git clone https://github.com/MariaDB/server.git
 RUN cd server \
-  && git checkout mariadb-10.3.27
+  && git fetch \
+  && git checkout mariadb-10.4.18
 RUN apt-get update \
   && apt-get install -y \
       dh-exec
