@@ -3,7 +3,8 @@ FROM debian/eol:wheezy
 ENV MAIN_PREFIX_NO_ROOT opt/php-7.4
 ENV MAIN_PREFIX /$MAIN_PREFIX_NO_ROOT
 ENV DEP_PREFIX $MAIN_PREFIX/dependencies
-ENV PACKAGE_NAME php-7.4.12-opt
+ENV PHP_VERSION php-7.4.16
+ENV PACKAGE_NAME $PHP_VERSION-opt
 
 RUN apt-get update \
   && apt-get install -y \
@@ -88,9 +89,9 @@ RUN cd libsodium-1.0.18 \
   && ./configure --prefix=$DEP_PREFIX \
   && make \
   && checkinstall -y --pkgname $PACKAGE_NAME-libsodium
-RUN wget https://www.php.net/distributions/php-7.4.12.tar.gz
-RUN tar xzf php-7.4.12.tar.gz
-RUN cd php-7.4.12 \
+RUN wget https://www.php.net/distributions/$PHP_VERSION.tar.gz
+RUN tar xzf $PHP_VERSION.tar.gz
+RUN cd $PHP_VERSION \
   && PKG_CONFIG_PATH=$DEP_PREFIX/lib/pkgconfig ./configure \
       --prefix=$MAIN_PREFIX \
       #--with-libdir=/lib/x86_64-linux-gnu \
@@ -141,7 +142,7 @@ RUN cd php-7.4.12 \
       --with-zip \
       --with-zlib \
   && make
-RUN cd php-7.4.12 \
+RUN cd $PHP_VERSION \
   && mkdir -p $MAIN_PREFIX_NO_ROOT/etc/conf.d \
   && cp php.ini-production $MAIN_PREFIX_NO_ROOT/etc/php.ini \
   && sed -i -E 's/^short_open_tag =.+$/short_open_tag = On/' $MAIN_PREFIX_NO_ROOT/etc/php.ini \
@@ -153,50 +154,50 @@ RUN cd php-7.4.12 \
   && echo $MAIN_PREFIX_NO_ROOT/etc/php.ini >> files_to_add \
   && echo $MAIN_PREFIX_NO_ROOT/etc/conf.d/opcache.ini >> files_to_add \
   && checkinstall -y --pkgname $PACKAGE_NAME --include files_to_add
-RUN cd /php-7.4.12/ext \
+RUN cd /$PHP_VERSION/ext \
   && wget https://github.com/Imagick/imagick/archive/3.4.4.tar.gz \
   && tar xzf 3.4.4.tar.gz \
   && cd imagick-3.4.4 \
   && $MAIN_PREFIX/bin/phpize \
   && ./configure --with-php-config=$MAIN_PREFIX/bin/php-config \
   && make
-RUN cd /php-7.4.12/ext/imagick-3.4.4 \
+RUN cd /$PHP_VERSION/ext/imagick-3.4.4 \
   && mkdir -p $MAIN_PREFIX_NO_ROOT/etc/conf.d \
   && echo extension=imagick.so > $MAIN_PREFIX_NO_ROOT/etc/conf.d/imagick.ini \
   && echo $MAIN_PREFIX_NO_ROOT/etc/conf.d/imagick.ini >> files_to_add \
   && checkinstall -y --pkgname $PACKAGE_NAME-imagick --include files_to_add
-RUN cd /php-7.4.12/ext \
-  && wget https://github.com/krakjoe/apcu/archive/v5.1.19.tar.gz \
-  && tar xzf v5.1.19.tar.gz \
-  && cd apcu-5.1.19 \
+RUN cd /$PHP_VERSION/ext \
+  && wget https://github.com/krakjoe/apcu/archive/v5.1.20.tar.gz \
+  && tar xzf v5.1.20.tar.gz \
+  && cd apcu-5.1.20 \
   && $MAIN_PREFIX/bin/phpize \
   && ./configure --with-php-config=$MAIN_PREFIX/bin/php-config \
   && make
-RUN cd /php-7.4.12/ext/apcu-5.1.19 \
+RUN cd /$PHP_VERSION/ext/apcu-5.1.20 \
   && mkdir -p $MAIN_PREFIX_NO_ROOT/etc/conf.d \
   && echo extension=apcu.so > $MAIN_PREFIX_NO_ROOT/etc/conf.d/apcu.ini \
   && echo $MAIN_PREFIX_NO_ROOT/etc/conf.d/apcu.ini >> files_to_add \
   && checkinstall -y --pkgname $PACKAGE_NAME-apcu --include files_to_add
-RUN cd /php-7.4.12/ext \
+RUN cd /$PHP_VERSION/ext \
   && wget https://github.com/php-memcached-dev/php-memcached/archive/v3.1.5.tar.gz \
   && tar xzf v3.1.5.tar.gz \
   && cd php-memcached-3.1.5 \
   && $MAIN_PREFIX/bin/phpize \
   && ./configure --with-php-config=$MAIN_PREFIX/bin/php-config --disable-memcached-sasl \
   && make
-RUN cd /php-7.4.12/ext/php-memcached-3.1.5 \
+RUN cd /$PHP_VERSION/ext/php-memcached-3.1.5 \
   && mkdir -p $MAIN_PREFIX_NO_ROOT/etc/conf.d \
   && echo extension=memcached.so > $MAIN_PREFIX_NO_ROOT/etc/conf.d/memcached.ini \
   && echo $MAIN_PREFIX_NO_ROOT/etc/conf.d/memcached.ini >> files_to_add \
   && checkinstall -y --pkgname $PACKAGE_NAME-memcached --include files_to_add
-RUN cd /php-7.4.12/ext \
-  && wget https://github.com/phpredis/phpredis/archive/5.3.3.tar.gz \
-  && tar xzf 5.3.3.tar.gz \
-  && cd phpredis-5.3.3 \
+RUN cd /$PHP_VERSION/ext \
+  && wget https://github.com/phpredis/phpredis/archive/5.3.4.tar.gz \
+  && tar xzf 5.3.4.tar.gz \
+  && cd phpredis-5.3.4 \
   && $MAIN_PREFIX/bin/phpize \
   && ./configure --with-php-config=$MAIN_PREFIX/bin/php-config \
   && make
-RUN cd /php-7.4.12/ext/phpredis-5.3.3 \
+RUN cd /$PHP_VERSION/ext/phpredis-5.3.4 \
   && mkdir -p $MAIN_PREFIX_NO_ROOT/etc/conf.d \
   && echo extension=redis.so > $MAIN_PREFIX_NO_ROOT/etc/conf.d/redis.ini \
   && echo $MAIN_PREFIX_NO_ROOT/etc/conf.d/redis.ini >> files_to_add \
