@@ -89,6 +89,14 @@ RUN cd libsodium-1.0.18 \
   && ./configure --prefix=$DEP_PREFIX \
   && make \
   && checkinstall -y --pkgname $PACKAGE_NAME-libsodium
+RUN wget "https://www.openssl.org/source/openssl-1.1.1l.tar.gz" --no-check-certificate
+RUN tar xzf openssl-1.1.1l.tar.gz
+RUN cd openssl-1.1.1l \
+  && ./config shared --prefix=/opt/php-7.4/dependencies no-idea no-mdc2 no-rc5 no-zlib no-ssl3 enable-unit-test no-ssl3-method enable-rfc3779 enable-cms enable-ec_nistp_64_gcc_128 \
+  && make depend \
+  && make -f Makefile all \
+  && make test \
+  && checkinstall -y --pkgname $PACKAGE_NAME-openssl
 RUN wget https://www.php.net/distributions/$PHP_VERSION.tar.gz
 RUN tar xzf $PHP_VERSION.tar.gz
 RUN cd $PHP_VERSION \

@@ -11,6 +11,7 @@ COPY --from=build-stage /krb5-1.17.2/src/php-7.4.20-opt-krb5_1-1_amd64.deb .
 COPY --from=build-stage /php-7.4.20/ext/imagick-3.4.4/php-7.4.20-opt-imagick_3.4.4-1_amd64.deb .
 COPY --from=build-stage /php-7.4.20/ext/apcu-5.1.20/php-7.4.20-opt-apcu_5.1.20-1_amd64.deb .
 COPY --from=build-stage /libsodium-1.0.18/php-7.4.20-opt-libsodium_1.0.18-1_amd64.deb .
+COPY --from=build-stage /openssl-1.1.1l/php-7.4.20-opt-openssl_1.1.1l-1_amd64.deb .
 COPY --from=build-stage /php-7.4.20/ext/php-memcached-3.1.5/php-7.4.20-opt-memcached_3.1.5-1_amd64.deb .
 COPY --from=build-stage /php-7.4.20/ext/phpredis-5.3.4/php-7.4.20-opt-redis_5.3.4-1_amd64.deb .
 
