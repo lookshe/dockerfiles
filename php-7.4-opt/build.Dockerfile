@@ -3,7 +3,7 @@ FROM debian/eol:wheezy
 ENV MAIN_PREFIX_NO_ROOT opt/php-7.4
 ENV MAIN_PREFIX /$MAIN_PREFIX_NO_ROOT
 ENV DEP_PREFIX $MAIN_PREFIX/dependencies
-ENV PHP_VERSION php-7.4.20
+ENV PHP_VERSION php-7.4.28
 ENV PACKAGE_NAME $PHP_VERSION-opt
 
 RUN apt-get update \
@@ -69,7 +69,7 @@ RUN cd oniguruma-6.9.6 \
   && ./configure --prefix=$DEP_PREFIX \
   && make \
   && checkinstall -y --pkgname $PACKAGE_NAME-oniguruma
-RUN wget https://libzip.org/download/libzip-0.11.2.tar.gz
+RUN wget https://libzip.org/download/libzip-0.11.2.tar.gz --no-check-certificate
 RUN tar xzf libzip-0.11.2.tar.gz
 # in this case checkinstall only works after "make install"
 RUN cd libzip-0.11.2 \
@@ -83,7 +83,7 @@ RUN cd libgd-2.1.1 \
   && ./configure --prefix=$DEP_PREFIX \
   && make \
   && checkinstall -y --pkgname $PACKAGE_NAME-libgd
-RUN curl https://download.libsodium.org/libsodium/releases/libsodium-1.0.18.tar.gz > libsodium-1.0.18.tar.gz
+RUN curl -k https://download.libsodium.org/libsodium/releases/libsodium-1.0.18.tar.gz > libsodium-1.0.18.tar.gz
 RUN tar xzf libsodium-1.0.18.tar.gz
 RUN cd libsodium-1.0.18 \
   && ./configure --prefix=$DEP_PREFIX \
