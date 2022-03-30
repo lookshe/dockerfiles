@@ -50,7 +50,7 @@ RUN cd libxml2-v2.9.10 \
   && ./autogen.sh --prefix=$DEP_PREFIX \
   && make \
   && make install \
-  && checkinstall -y --pkgname $PACKAGE_NAME-libxml2
+  && checkinstall -y --pkgname $PACKAGE_NAME-libxml2 --pkgversion 2.9.10
 RUN wget https://cmake.org/files/v2.8/cmake-2.8.12.1.tar.gz
 RUN tar xzf cmake-2.8.12.1.tar.gz
 RUN cd cmake-2.8.12.1 \

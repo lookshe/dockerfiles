@@ -50,7 +50,7 @@ RUN cd libxml2-v2.9.10 \
   && ./autogen.sh --prefix=$DEP_PREFIX \
   && make \
   && make install \
-  && checkinstall -y --pkgname $PACKAGE_NAME-libxml2
+  && checkinstall -y --pkgname $PACKAGE_NAME-libxml2 --pkgversion 2.9.10
 RUN wget https://cmake.org/files/v2.8/cmake-2.8.12.1.tar.gz
 RUN tar xzf cmake-2.8.12.1.tar.gz
 RUN cd cmake-2.8.12.1 \
@@ -105,6 +105,14 @@ RUN cd libsodium-1.0.18 \
   && ./configure --prefix=$DEP_PREFIX \
   && make \
   && checkinstall -y --pkgname $PACKAGE_NAME-libsodium
+RUN curl -k "https://www.openssl.org/source/openssl-1.1.1n.tar.gz" > openssl-1.1.1n.tar.gz
+RUN tar xzf openssl-1.1.1n.tar.gz
+RUN cd openssl-1.1.1n \
+  && ./config --prefix=$DEP_PREFIX --openssldir=$DEP_PREFIX no-idea no-mdc2 no-rc5 no-zlib no-ssl3 enable-unit-test no-ssl3-method enable-rfc3779 enable-cms enable-ec_nistp_64_gcc_128 \
+  && make depend \
+  && make all \
+  && make test \
+  && checkinstall -y --pkgname $PACKAGE_NAME-openssl
 RUN wget https://www.php.net/distributions/$PHP_VERSION.tar.gz
 RUN tar xzf $PHP_VERSION.tar.gz
 RUN cd $PHP_VERSION \
