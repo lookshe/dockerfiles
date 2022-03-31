@@ -47,7 +47,7 @@ RUN cd curl-7.73.0 \
 RUN curl -k https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.9.10/libxml2-v2.9.10.tar.gz > libxml2-v2.9.10.tar.gz
 RUN tar xzf libxml2-v2.9.10.tar.gz
 RUN cd libxml2-v2.9.10 \
-  && ./autogen.sh --prefix=$DEP_PREFIX \
+  && ./autogen.sh --prefix=$DEP_PREFIX --disable-python \
   && make \
   && make install \
   && checkinstall -y --pkgname $PACKAGE_NAME-libxml2 --pkgversion 2.9.10
